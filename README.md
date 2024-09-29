@@ -1,4 +1,4 @@
-# Project_ScorePredictor
+# ScorePredictor
 
 ## Data Analysis System for Sports Betting
 
