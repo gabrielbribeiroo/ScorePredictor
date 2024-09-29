@@ -18,6 +18,13 @@ The system uses a dynamic calculation that adjusts the strength of each team bas
 ### Goals
 This project combines sports statistics with logic programming to provide well-founded predictions for football matches. Through factors such as recent performance, absences and history, Score Predictor becomes an effective tool for analyzing and predicting results for the 2024 Brasileirão.
 
+### Languages and Tools
+<div style="display: inline_block"><cbr>
+  <img align = "top" alt = "gabrielbribeiroo_Prolog" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prolog/prolog-original.svg" />
+  <img align = "top" alt = "gabrielbribeiroo_VSCode" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" />
+  <img align = "top" alt = "gabrielbribeiroo_PowerShell" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powershell/powershell-original.svg" />
+</div>
+
 ### Instructions for use
 - **Clone the repository**: git clone https://github.com/gabrielbribeiroo/ScorePredictor.git
 - **Interpret the project**: Use a Prolog interpreter for the project files.
