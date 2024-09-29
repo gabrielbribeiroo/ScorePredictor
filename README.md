@@ -1,20 +1,25 @@
 # Project_ScorePredictor
+
 ## Data Analysis System for Sports Betting
 
 ### Description
-This project is a statistical analysis system for Brasileirão Betano 2024 football matches, developed in Prolog, to assist in decision-making in sports betting, showing the probabilities of the match result.
+This project is a statistical analysis system for Brasileirão 2024 football matches, developed in Prolog, to assist in decision-making in sports betting, showing the probabilities of the match result.
 
 ### Features
-
+- **User interaction menu**: User informs the home and away teams, as well as the level of absence of each one.
+- **Probability of match outcome**: The system returns the probabilities of the match result, based on team statistics provided by the user.
 
 ### System modeling
 From the definition of the data set, including previous matches, information about the times and players, together with the specific data of the confrontation, the probabilities for the outcome of the duel are calculated, through weights assigned to the parameters.
 
 ### Data manipulation
-Todos os dados manipulados no sistema são armazenados em arquivos para garantir que as informações sejam persistentes entre as execuções. Ao iniciar o programa, os dados são carregados automaticamente, e ao finalizar, todos os registros são salvos em um arquivo.
+The system uses a dynamic calculation that adjusts the strength of each team based on their stats and absences, as well as adjusting for head-to-head matches between teams of similar status (famous derbies). As the code progresses, the odds are recalculated to ensure that the sum of the 3 possibilities (home win, draw and away win) is 100%, offering a balanced and realistic prediction of the results.
+
+### Goals
+This project combines sports statistics with logic programming to provide well-founded predictions for football matches. Through factors such as recent performance, absences and history, Score Predictor becomes an effective tool for analyzing and predicting results for the 2024 Brasileirão.
 
 ### Instructions for use
-Clone o repositório: git clone https://github.com/gabrielbribeiroo/Projeto_Prolog.pl.git
-Compile o projeto: Use um interpretador de Prolog para os arquivos do projeto.
-Execute o programa: Após a interpretação, execute o binário gerado para iniciar o sistema.
-Navegue pelo menu
+- **Clone the repository**: git clone https://github.com/gabrielbribeiroo/ScorePredictor.git
+- **Interpret the project**: Use a Prolog interpreter for the project files.
+- **Run the program**: After interpreting, run the function consultar_jogo.
+- **Navigate through the menu**: know the probability of the match result.
