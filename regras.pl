@@ -67,10 +67,12 @@ ajustar_para_classico(StatusCasa, StatusFora, ContribuicaoCasa, ContribuicaoFora
       (StatusCasa == medio, StatusFora == medio) ; 
       (StatusCasa == pequeno, StatusFora == pequeno) ),
     !,  % Se for um clássico, ajusta as contribuições para serem mais equilibradas
+
     FatorAjuste is 0.95,  % Suaviza a diferença em clássicos
     ContribuicaoCasaAjustada is ContribuicaoCasa * FatorAjuste,
     ContribuicaoForaAjustada is ContribuicaoFora * FatorAjuste,
     MaxEmpateAjustado is 35.  % Aumenta a probabilidade de empate em clássicos.
+    
 ajustar_para_classico(_, _, ContribuicaoCasa, ContribuicaoFora, ContribuicaoCasa, ContribuicaoFora, 40).  % Para jogos normais, mantém as contribuições e o empate padrão.
 
 % Cálculo da probabilidade de empate
@@ -87,9 +89,11 @@ prever_resultado(TimeCasa, TimeFora, ProbCasa, ProbFora, ProbEmpateFinal, Desfal
     ajustar_para_classico(StatusCasa, StatusFora, ContribuicaoCasa, ContribuicaoFora, ContribuicaoCasaAjustada, ContribuicaoForaAjustada, MaxEmpateAjustado),
     calcular_probabilidade_com_empate(ContribuicaoCasaAjustada, ContribuicaoForaAjustada, MaxEmpateAjustado, ProbEmpateAjustado),
     TotalContribuicao is ContribuicaoCasaAjustada + ContribuicaoForaAjustada,
+
     % Calcular as probabilidades de cada time
     ProbCasaRaw is (ContribuicaoCasaAjustada / TotalContribuicao) * (100 - ProbEmpateAjustado),
     ProbForaRaw is (ContribuicaoForaAjustada / TotalContribuicao) * (100 - ProbEmpateAjustado),
+
     % Ajuste para garantir que a soma seja exatamente 100%
     SomaBruta is ProbCasaRaw + ProbForaRaw + ProbEmpateAjustado,
     FatorAjuste is 100 / SomaBruta,  % Ajustar as probabilidades para somarem 100%
@@ -104,21 +108,30 @@ prever_resultado(TimeCasa, TimeFora, ProbCasa, ProbFora, ProbEmpateFinal, Desfal
 
 % Interação com o usuário para prever resultado
 consultar_jogo :- 
+    format('----------------------------------------------------------------------------------------------------~n'),
+    format('                                        MENU DA PARTIDA                                             ~n'),
+    format('----------------------------------------------------------------------------------------------------~n'),
+    format('                                      SITUACAO DOS TIMES                                            ~n'),
+    format('completo: [0-1 desfalques]~npouco_desfalcado: [2-3 desfalques]~n'),
+    format('desfalcado: [4 DESFALQUES]~nmuito_desfalcado: [5+ desfalques]~n'),
+    format('----------------------------------------------------------------------------------------------------~n'),
     write('Digite o time da casa: '), 
     read(TimeCasaStr), downcase_atom(TimeCasaStr, TimeCasa), 
     write('Digite o time de fora: '), 
     read(TimeForaStr), downcase_atom(TimeForaStr, TimeFora),
+
     
     % Perguntar sobre o nível de desfalque dos times
+    format('----------------------------------------------------------------------------------------------------~n'),
     write('O time da casa esta completo, pouco_desfalcado, desfalcado ou muito_desfalcado? '),
     read(DesfalqueCasaStr), downcase_atom(DesfalqueCasaStr, DesfalqueCasa),
-    
     write('O time de fora esta completo, pouco_desfalcado, desfalcado ou muito_desfalcado? '),
     read(DesfalqueForaStr), downcase_atom(DesfalqueForaStr, DesfalqueFora),
-
+    format('====================================================================================================~n'),
     prever_resultado(TimeCasa, TimeFora, ProbCasa, ProbFora, ProbEmpate, DesfalqueCasa, DesfalqueFora),
     
     % Exibir as probabilidades
     format('Probabilidade de ~w ganhar: ~2f%~n', [TimeCasa, ProbCasa]),
     format('Probabilidade de ~w ganhar: ~2f%~n', [TimeFora, ProbFora]),
-    format('Probabilidade de empate: ~2f%~n', [ProbEmpate]).
+    format('Probabilidade de empate: ~2f%~n', [ProbEmpate]),
+    format('====================================================================================================~n').
