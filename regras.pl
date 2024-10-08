@@ -42,7 +42,7 @@ calcular_contribuicao(Time, Contribuicao, FatorCasa, Desfalque) :-
     % Aplicar o aproveitamento correto dependendo se é casa ou fora
     (FatorCasa == true -> FatorAprov = AprovCasa; FatorAprov = AprovFora),
     
-    % Incluir AprovRec corretamente no cálculo e também AprovCasa/Fora
+    % Calculo utilizando as estatísticas e seus respectivos pesos
     ContribuicaoBasica is GolsPro * PesoGolsPro +
                          GolsContra * PesoGolsContra +
                          PosseBola * PesoPosse +
@@ -67,18 +67,22 @@ ajustar_para_classico(StatusCasa, StatusFora, ContribuicaoCasa, ContribuicaoFora
       (StatusCasa == medio, StatusFora == medio) ; 
       (StatusCasa == pequeno, StatusFora == pequeno) ),
     !,  % Se for um clássico, ajusta as contribuições para serem mais equilibradas
-
     FatorAjuste is 0.95,  % Suaviza a diferença em clássicos
     ContribuicaoCasaAjustada is ContribuicaoCasa * FatorAjuste,
     ContribuicaoForaAjustada is ContribuicaoFora * FatorAjuste,
-    MaxEmpateAjustado is 35.  % Aumenta a probabilidade de empate em clássicos.
-    
-ajustar_para_classico(_, _, ContribuicaoCasa, ContribuicaoFora, ContribuicaoCasa, ContribuicaoFora, 40).  % Para jogos normais, mantém as contribuições e o empate padrão.
+    MaxEmpateAjustado is 40.  % Aumenta a probabilidade de empate em clássicos.
+ajustar_para_classico(_, _, ContribuicaoCasa, ContribuicaoFora, ContribuicaoCasa, ContribuicaoFora, 35).  % Para jogos normais, mantém as contribuições e o empate padrão.
 
-% Cálculo da probabilidade de empate
-calcular_probabilidade_com_empate(ContribuicaoA, ContribuicaoB, MaxEmpate, ProbEmpate) :-
-    Diferenca is abs(ContribuicaoA - ContribuicaoB),
-    ProbEmpate is max(1, (1 - Diferenca / (ContribuicaoA + ContribuicaoB)) * MaxEmpate).
+% Cálculo da probabilidade de empate com ajuste retirando do visitante
+calcular_probabilidade_com_empate(ContribuicaoCasa, ContribuicaoFora, MaxEmpate, ProbEmpate, ProbForaAjustado) :-
+    Diferenca is abs(ContribuicaoCasa - ContribuicaoFora),
+    
+    % Reduzir uma fração da vantagem do visitante e transferir para o empate
+    AjusteEmpate is min(10, (Diferenca / (ContribuicaoCasa + ContribuicaoFora)) * 10),
+    ProbEmpate is min(MaxEmpate, AjusteEmpate + ((1 - Diferenca / (ContribuicaoCasa + ContribuicaoFora)) * MaxEmpate)),
+    
+    % Retirar parte da vantagem do visitante e transferir para o empate
+    ProbForaAjustado is max(1, (ContribuicaoFora / (ContribuicaoCasa + ContribuicaoFora)) * (100 - ProbEmpate)).
 
 % Função para calcular a probabilidade final de vitória e empate
 prever_resultado(TimeCasa, TimeFora, ProbCasa, ProbFora, ProbEmpateFinal, DesfalqueCasa, DesfalqueFora) :-
@@ -87,39 +91,32 @@ prever_resultado(TimeCasa, TimeFora, ProbCasa, ProbFora, ProbEmpateFinal, Desfal
     calcular_contribuicao(TimeCasa, ContribuicaoCasa, true, DesfalqueCasa),  % Time da casa com ajuste de desfalque
     calcular_contribuicao(TimeFora, ContribuicaoFora, false, DesfalqueFora),  % Time de fora com ajuste de desfalque
     ajustar_para_classico(StatusCasa, StatusFora, ContribuicaoCasa, ContribuicaoFora, ContribuicaoCasaAjustada, ContribuicaoForaAjustada, MaxEmpateAjustado),
-    calcular_probabilidade_com_empate(ContribuicaoCasaAjustada, ContribuicaoForaAjustada, MaxEmpateAjustado, ProbEmpateAjustado),
+    calcular_probabilidade_com_empate(ContribuicaoCasaAjustada, ContribuicaoForaAjustada, MaxEmpateAjustado, ProbEmpateAjustado, ProbForaAjustada),
     TotalContribuicao is ContribuicaoCasaAjustada + ContribuicaoForaAjustada,
-
+   
     % Calcular as probabilidades de cada time
     ProbCasaRaw is (ContribuicaoCasaAjustada / TotalContribuicao) * (100 - ProbEmpateAjustado),
-    ProbForaRaw is (ContribuicaoForaAjustada / TotalContribuicao) * (100 - ProbEmpateAjustado),
-
+   
     % Ajuste para garantir que a soma seja exatamente 100%
-    SomaBruta is ProbCasaRaw + ProbForaRaw + ProbEmpateAjustado,
+    SomaBruta is ProbCasaRaw + ProbForaAjustada + ProbEmpateAjustado,
     FatorAjuste is 100 / SomaBruta,  % Ajustar as probabilidades para somarem 100%
     ProbCasaAjustada is ProbCasaRaw * FatorAjuste,
-    ProbForaAjustada is ProbForaRaw * FatorAjuste,
+    ProbFora is ProbForaAjustada * FatorAjuste,
     ProbEmpateAjustadoFinal is ProbEmpateAjustado * FatorAjuste,
 
     % Garantir que todas as probabilidades sejam no mínimo 1%
     ProbCasa is max(1, ProbCasaAjustada),
-    ProbFora is max(1, ProbForaAjustada),
     ProbEmpateFinal is max(1, ProbEmpateAjustadoFinal).
 
 % Interação com o usuário para prever resultado
 consultar_jogo :- 
     format('----------------------------------------------------------------------------------------------------~n'),
-    format('                                        MENU DA PARTIDA                                             ~n'),
-    format('----------------------------------------------------------------------------------------------------~n'),
-    format('                                      SITUACAO DOS TIMES                                            ~n'),
-    format('completo: [0-1 desfalques]~npouco_desfalcado: [2-3 desfalques]~n'),
-    format('desfalcado: [4 DESFALQUES]~nmuito_desfalcado: [5+ desfalques]~n'),
+    format('                                            MENU DA PARTIDA                                         ~n'),
     format('----------------------------------------------------------------------------------------------------~n'),
     write('Digite o time da casa: '), 
     read(TimeCasaStr), downcase_atom(TimeCasaStr, TimeCasa), 
     write('Digite o time de fora: '), 
     read(TimeForaStr), downcase_atom(TimeForaStr, TimeFora),
-
     
     % Perguntar sobre o nível de desfalque dos times
     format('----------------------------------------------------------------------------------------------------~n'),

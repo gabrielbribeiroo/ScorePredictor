@@ -27,6 +27,6 @@ This project combines sports statistics with logic programming to provide well-f
 
 ### Instructions for use
 - **Clone the repository**: git clone https://github.com/gabrielbribeiroo/ScorePredictor.git
-- **Interpret the project**: Use a Prolog interpreter for the project files.
-- **Run the program**: After interpretation, load the program (consult('regras.pl')) and execute the consultar_jogo function.
+- **Interpret the project**: Use a Prolog interpreter for the project files (***--- swipl ---***).  
+- **Run the program**: After interpretation, load the program (***---consult('regras.pl').---***) and execute the (***---consultar_jogo---***) function.
 - **Navigate through the menu**: Know the probability of the match result.
