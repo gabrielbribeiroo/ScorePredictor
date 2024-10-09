@@ -6,14 +6,14 @@
 This project is a statistical analysis system for Brasileirão 2024 football matches, developed in Prolog, to assist in decision-making in sports betting, showing the probabilities of the match result.
 
 ### Features
-- **User interaction menu**: The user informs the home and away teams, as well as the level of absence of each one.
+- **User interaction menu**: The user informs the home and away teams and the level of absence of each one.
 - **Probability of match outcome**: The system returns the probabilities of the match result, based on team statistics provided by the user.
 
 ### System modeling
-From the definition of the data set, which will be imported when starting the program, including previous matches, information about the teams and players, together with the specific data of the confrontation, the probabilities of the result of the duel are calculated, through weights assigned to the parameters.
+The definition of the data set, which will be imported when starting the program, includes previous matches, information about the teams and players, and the specific data of the confrontation. Through weights assigned to the parameters, the probabilities of the duel's result are calculated.
 
 ### Data manipulation
-The system uses a dynamic calculation that adjusts the strength of each team based on their stats and absences, as well as adjusting for head-to-head matches between teams of similar status (famous derbies). As the code progresses, the odds are recalculated to ensure that the sum of the 3 possibilities (home win, draw, and away win) is 100%, offering a balanced and realistic prediction of the results.
+The system uses a dynamic calculation that adjusts each team's strength based on their stats and absences and for head-to-head matches between teams of similar status (famous derbies). As the code progresses, the odds are recalculated to ensure that the sum of the 3 possibilities (home win, draw, and away win) is 100%, offering a balanced and realistic prediction of the results.
 
 ### Goals
 This project combines sports statistics with logic programming to provide well-founded predictions for football matches. Through factors such as recent performance, absences, and history, Score Predictor becomes an effective tool for analyzing and predicting results for the 2024 Brasileirão.
@@ -27,6 +27,6 @@ This project combines sports statistics with logic programming to provide well-f
 
 ### Instructions for use
 - **Clone the repository**: git clone https://github.com/gabrielbribeiroo/ScorePredictor.git
-- **Interpret the project**: Use a Prolog interpreter for the project files (***--- swipl ---***).  
-- **Run the program**: After interpretation, load the program (***---consult('regras.pl').---***) and execute the (***---consultar_jogo---***) function.
+- **Interpret the project**: Use a Prolog interpreter for the project files (```swipl```).  
+- **Run the program**: After interpretation, load the program (```consult('regras.pl').```) and execute the (```consultar_jogo.```) function.
 - **Navigate through the menu**: Know the probability of the match result.
