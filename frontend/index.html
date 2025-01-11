@@ -3,45 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Previsão de Partida</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Prever Resultado - Brasileirão</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Previsão de Resultados de Partidas</h1>
-        <form id="match-form">
-            <label for="home-team">Time da Casa:</label>
-            <input type="text" id="home-team" name="home-team" required>
+    <header>
+        <h1>Prever Resultado - Brasileirão</h1>
+    </header>
+    <main>
+        <section id="input-section">
+            <h2>Preencha as informações do jogo</h2>
+            <form id="match-form">
+                <label for="home-team">Time da Casa:</label>
+                <input type="text" id="home-team" name="home-team" placeholder="Ex: Flamengo" required>
+                
+                <label for="away-team">Time Visitante:</label>
+                <input type="text" id="away-team" name="away-team" placeholder="Ex: Palmeiras" required>
+                
+                <label for="home-condition">Condição do Time da Casa:</label>
+                <select id="home-condition" name="home-condition" required>
+                    <option value="completo">Completo</option>
+                    <option value="pouco_desfalcado">Pouco Desfalcado</option>
+                    <option value="desfalcado">Desfalcado</option>
+                    <option value="muito_desfalcado">Muito Desfalcado</option>
+                </select>
+                
+                <label for="away-condition">Condição do Time Visitante:</label>
+                <select id="away-condition" name="away-condition" required>
+                    <option value="completo">Completo</option>
+                    <option value="pouco_desfalcado">Pouco Desfalcado</option>
+                    <option value="desfalcado">Desfalcado</option>
+                    <option value="muito_desfalcado">Muito Desfalcado</option>
+                </select>
+                
+                <button type="button" id="predict-button">Prever Resultado</button>
+            </form>
+        </section>
 
-            <label for="away-team">Time de Fora:</label>
-            <input type="text" id="away-team" name="away-team" required>
-
-            <label for="home-desfalque">Desfalque Time da Casa:</label>
-            <select id="home-desfalque" name="home-desfalque" required>
-                <option value="completo">Completo</option>
-                <option value="pouco_desfalcado">Pouco Desfalcado</option>
-                <option value="desfalcado">Desfalcado</option>
-                <option value="muito_desfalcado">Muito Desfalcado</option>
-            </select>
-
-            <label for="away-desfalque">Desfalque Time de Fora:</label>
-            <select id="away-desfalque" name="away-desfalque" required>
-                <option value="completo">Completo</option>
-                <option value="pouco_desfalcado">Pouco Desfalcado</option>
-                <option value="desfalcado">Desfalcado</option>
-                <option value="muito_desfalcado">Muito Desfalcado</option>
-            </select>
-
-            <button type="submit">Prever Resultado</button>
-        </form>
-
-        <div id="result">
-            <h2>Resultado:</h2>
-            <p id="home-prob"></p>
-            <p id="away-prob"></p>
-            <p id="draw-prob"></p>
-        </div>
-    </div>
+        <section id="result-section" style="display: none;">
+            <h2>Resultado Previsto</h2>
+            <p id="home-probability"></p>
+            <p id="away-probability"></p>
+            <p id="draw-probability"></p>
+        </section>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,30 +1,48 @@
-document.getElementById("match-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
+document.getElementById("predict-button").addEventListener("click", async () => {
+    // Obtenha os valores inseridos no formulário
+    const homeTeam = document.getElementById("home-team").value.trim();
+    const awayTeam = document.getElementById("away-team").value.trim();
+    const homeCondition = document.getElementById("home-condition").value;
+    const awayCondition = document.getElementById("away-condition").value;
 
-    const homeTeam = document.getElementById("home-team").value;
-    const awayTeam = document.getElementById("away-team").value;
-    const homeDesfalque = document.getElementById("home-desfalque").value;
-    const awayDesfalque = document.getElementById("away-desfalque").value;
+    // Valide os campos
+    if (!homeTeam || !awayTeam) {
+        alert("Por favor, insira os nomes dos times.");
+        return;
+    }
 
-    // Fazer a solicitação para o servidor
-    const response = await fetch("/api/prever_resultado", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            homeTeam,
-            awayTeam,
-            homeDesfalque,
-            awayDesfalque,
-        }),
-    });
+    try {
+        // Envie os dados para a API
+        const response = await fetch("http://127.0.0.1:5000/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                home_team: homeTeam,
+                away_team: awayTeam,
+                home_condition: homeCondition,
+                away_condition: awayCondition,
+            }),
+        });
 
-    const result = await response.json();
+        // Verifique se a API respondeu corretamente
+        if (!response.ok) {
+            throw new Error("Erro ao obter os resultados. Verifique se a API está em execução.");
+        }
 
-    // Atualizar os resultados na interface
-    document.getElementById("home-prob").innerText = `Probabilidade de ${homeTeam} ganhar: ${result.ProbCasa.toFixed(2)}%`;
-    document.getElementById("away-prob").innerText = `Probabilidade de ${awayTeam} ganhar: ${result.ProbFora.toFixed(2)}%`;
-    document.getElementById("draw-prob").innerText = `Probabilidade de empate: ${result.ProbEmpate.toFixed(2)}%`;
+        const result = await response.json();
 
-    // Rolar automaticamente para a seção de resultados
-    document.getElementById("result").scrollIntoView({ behavior: "smooth" });
+        // Exiba os resultados
+        document.getElementById("home-probability").textContent = `Probabilidade de vitória do ${homeTeam}: ${result.prob_home}%`;
+        document.getElementById("away-probability").textContent = `Probabilidade de vitória do ${awayTeam}: ${result.prob_away}%`;
+        document.getElementById("draw-probability").textContent = `Probabilidade de empate: ${result.prob_draw}%`;
+
+        // Role para a seção de resultados e mostre-a
+        const resultSection = document.getElementById("result-section");
+        resultSection.style.display = "block";
+        resultSection.scrollIntoView({ behavior: "smooth" });
+
+    } catch (error) {
+        console.error(error);
+        alert("Erro ao calcular os resultados. Tente novamente.");
+    }
 });
