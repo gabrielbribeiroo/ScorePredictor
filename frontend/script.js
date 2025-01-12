@@ -1,48 +1,54 @@
-document.getElementById("predict-button").addEventListener("click", async () => {
-    // Obtenha os valores inseridos no formulário
-    const homeTeam = document.getElementById("home-team").value.trim();
-    const awayTeam = document.getElementById("away-team").value.trim();
-    const homeCondition = document.getElementById("home-condition").value;
-    const awayCondition = document.getElementById("away-condition").value;
+const homeTeamSelect = document.getElementById("homeTeam");
+const awayTeamSelect = document.getElementById("awayTeam");
+const resultsSection = document.getElementById("results");
 
-    // Valide os campos
-    if (!homeTeam || !awayTeam) {
-        alert("Por favor, insira os nomes dos times.");
-        return;
+// Buscar times da API
+async function loadTeams() {
+    const response = await fetch("/api/teams");
+    const teams = await response.json();
+
+    // Preencher os dropdowns com os times
+    Object.keys(teams).forEach(team => {
+        const optionHome = document.createElement("option");
+        optionHome.value = team;
+        optionHome.textContent = team.replace("_", " ").toUpperCase();
+
+        const optionAway = optionHome.cloneNode(true);
+
+        homeTeamSelect.appendChild(optionHome);
+        awayTeamSelect.appendChild(optionAway);
+    });
+}
+
+// Calcular as probabilidades
+async function calculateProbabilities() {
+    const homeTeam = homeTeamSelect.value;
+    const awayTeam = awayTeamSelect.value;
+
+    const response = await fetch("/api/calculate", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ home_team: homeTeam, away_team: awayTeam })
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+        resultsSection.innerHTML = `<p>Erro: ${data.error}</p>`;
+    } else {
+        resultsSection.innerHTML = `
+            <p>Probabilidade de ${data.home_team.replace("_", " ")} vencer: ${data.prob_home}%</p>
+            <p>Probabilidade de ${data.away_team.replace("_", " ")} vencer: ${data.prob_away}%</p>
+            <p>Probabilidade de empate: ${data.prob_draw}%</p>
+        `;
     }
 
-    try {
-        // Envie os dados para a API
-        const response = await fetch("http://127.0.0.1:5000/predict", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                home_team: homeTeam,
-                away_team: awayTeam,
-                home_condition: homeCondition,
-                away_condition: awayCondition,
-            }),
-        });
+    resultsSection.scrollIntoView({ behavior: "smooth" });
+}
 
-        // Verifique se a API respondeu corretamente
-        if (!response.ok) {
-            throw new Error("Erro ao obter os resultados. Verifique se a API está em execução.");
-        }
+document.getElementById("calculateButton").addEventListener("click", calculateProbabilities);
 
-        const result = await response.json();
-
-        // Exiba os resultados
-        document.getElementById("home-probability").textContent = `Probabilidade de vitória do ${homeTeam}: ${result.prob_home}%`;
-        document.getElementById("away-probability").textContent = `Probabilidade de vitória do ${awayTeam}: ${result.prob_away}%`;
-        document.getElementById("draw-probability").textContent = `Probabilidade de empate: ${result.prob_draw}%`;
-
-        // Role para a seção de resultados e mostre-a
-        const resultSection = document.getElementById("result-section");
-        resultSection.style.display = "block";
-        resultSection.scrollIntoView({ behavior: "smooth" });
-
-    } catch (error) {
-        console.error(error);
-        alert("Erro ao calcular os resultados. Tente novamente.");
-    }
-});
+// Carregar times ao carregar a página
+loadTeams();
