@@ -27,7 +27,14 @@ def salvar_dados_em_prolog(dados, arquivo):
         
         for time in times:
             nome = time['team']['name'].lower().replace(' ', '_')
-            status = "grande" if nome in ['flamengo', 'palmeiras', 'sao_paulo', 'corinthians', 'gremio'] else "medio"
+            if nome in ['atletico-mg', 'botafogo', 'corinthians', 'cruzeiro', 'flamengo', 'fluminense', 'grêmio', 'internacional', 'palmeiras', 'santos', 'sao_paulo', 'vasco']:
+                status = "grande"
+            elif nome in ['bahia', 'bragantino', 'ceara', 'fortaleza', 'sport']:
+                status = "medio"
+            elif nome in ['juventude', 'mirassol', 'vitoria']:
+                status = "pequeno"
+            else:
+                status = "desconhecido"  # Caso o time não esteja listado.
             classificacao = time['rank']
             gols_pro = time['all']['goals']['for']
             gols_contra = time['all']['goals']['against']
