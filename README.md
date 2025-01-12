@@ -19,12 +19,28 @@ The system uses a dynamic calculation that adjusts each team's strength based on
 This project combines sports statistics with logic programming to provide well-founded predictions for football matches. Through factors such as recent performance, absences, and history, Score Predictor becomes an effective tool for analyzing and predicting results for the 2024 Brasileirão.
 
 ### Languages and Tools
+#### Back-end
 <div style="display: inline_block"><cbr>
   <img align = "top" alt = "gabrielbribeiroo_Prolog" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prolog/prolog-original.svg" />
+  <img align = "top" alt = "gabrielbribeiroo_Python" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" /> 
+  <img align = "top" alt = "gabrielbribeiroo_FastAPI" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" />
   <img align = "top" alt = "gabrielbribeiroo_VSCode" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" />
   <img align = "top" alt = "gabrielbribeiroo_PowerShell" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powershell/powershell-original.svg" />
 </div>
 
+#### Front-end
+<div style="display: inline_block"><cbr>
+  <img align = "top" alt = "gabrielbribeiroo_HTML" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" />
+  <img align = "top" alt = "gabrielbribeiroo_CSS" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" />
+  <img align = "top" alt = "gabrielbribeiroo_JavaScript" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" />
+  <img align = "top" alt = "gabrielbribeiroo_Bootstrap" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" />
+</div>
+
+#### APIs and Integrations
+<div style="display: inline_block"><cbr>
+  <img align = "top" alt = "gabrielbribeiroo_REST API" height = "50" width = "50" src="https://img.icons8.com/fluency/48/api.png" /> 
+</div>
+  
 ### Instructions for use
 - **Clone the repository**: git clone https://github.com/gabrielbribeiroo/ScorePredictor.git
 - **Interpret the project**: Use a Prolog interpreter for the project files (```swipl```).  
