@@ -1,52 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prever Resultado - Brasileirão</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Previsão de Jogos - Brasileirão 2025</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Prever Resultado - Brasileirão</h1>
+        <div class="header-content">
+            <img src="logo-brasileirao.png" alt="Logo Brasileirão" class="logo">
+            <h1>Simulador de Resultados - Brasileirão 2025</h1>
+        </div>
     </header>
     <main>
-        <section id="input-section">
-            <h2>Preencha as informações do jogo</h2>
-            <form id="match-form">
-                <label for="home-team">Time da Casa:</label>
-                <input type="text" id="home-team" name="home-team" placeholder="Ex: Flamengo" required>
-                
-                <label for="away-team">Time Visitante:</label>
-                <input type="text" id="away-team" name="away-team" placeholder="Ex: Palmeiras" required>
-                
-                <label for="home-condition">Condição do Time da Casa:</label>
-                <select id="home-condition" name="home-condition" required>
-                    <option value="completo">Completo</option>
-                    <option value="pouco_desfalcado">Pouco Desfalcado</option>
-                    <option value="desfalcado">Desfalcado</option>
-                    <option value="muito_desfalcado">Muito Desfalcado</option>
-                </select>
-                
-                <label for="away-condition">Condição do Time Visitante:</label>
-                <select id="away-condition" name="away-condition" required>
-                    <option value="completo">Completo</option>
-                    <option value="pouco_desfalcado">Pouco Desfalcado</option>
-                    <option value="desfalcado">Desfalcado</option>
-                    <option value="muito_desfalcado">Muito Desfalcado</option>
-                </select>
-                
-                <button type="button" id="predict-button">Prever Resultado</button>
-            </form>
+        <section class="input-section">
+            <h2>Escolha os Times</h2>
+            <div class="dropdowns">
+                <div class="dropdown">
+                    <label for="homeTeam">Time da Casa:</label>
+                    <select id="homeTeam">
+                        <option value="" disabled selected>Selecione o Time</option>
+                    </select>
+                </div>
+                <div class="dropdown">
+                    <label for="awayTeam">Time Visitante:</label>
+                    <select id="awayTeam">
+                        <option value="" disabled selected>Selecione o Time</option>
+                    </select>
+                </div>
+            </div>
+            <button id="calculateButton">Prever Resultado</button>
         </section>
-
-        <section id="result-section" style="display: none;">
-            <h2>Resultado Previsto</h2>
-            <p id="home-probability"></p>
-            <p id="away-probability"></p>
-            <p id="draw-probability"></p>
+        <section id="results" class="results-section">
+            <h2>Resultado da Simulação</h2>
+            <div class="results-content"></div>
         </section>
     </main>
+    <footer>
+        <p>&copy; 2025 Simulador de Resultados do Brasileirão</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
