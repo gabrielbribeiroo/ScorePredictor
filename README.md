@@ -1,52 +1,91 @@
 # ScorePredictor
 
-## Data Analysis System for Sports Betting
+## **Data Analysis System for Sports Betting**
 
-### Description
-This project is a statistical analysis system for Brasileirão 2024 football matches, developed in Prolog, to assist in decision-making in sports betting, showing the probabilities of the match result.
+### **Description**
+ScorePredictor is a statistical analysis system designed for Brasileirão 2025 football matches. Developed in Prolog and integrated with Python and web technologies, the system provides data-driven predictions for match outcomes, assisting decision-making in sports betting.
 
-### Features
-- **User interaction menu**: The user informs the home and away teams and the level of absence of each one.
-- **Probability of match outcome**: The system returns the probabilities of the match result, based on team statistics provided by the user.
+### **Features**
+- **Interactive Web Interface**: Enables users to select teams, adjust absence levels, and intuitively view predictions.
+- **Probability Analysis**: Calculates match outcome probabilities (home win, draw, away win) based on recent performance, team statistics, and absence levels.
+- **Dynamic Updates**: Automatically fetches and updates team statistics from a football data API for the 2025 Brasileirão season.
 
-### System modeling
-The definition of the data set, which will be imported when starting the program, includes previous matches, information about the teams and players, and the specific data of the confrontation. Through weights assigned to the parameters, the probabilities of the duel's result are calculated.
+### **System Architecture**
+The system is built around a robust statistical model that dynamically calculates probabilities by:
+1. **Team Strength**: Based on historical performance, standings, and other key metrics.
+2. **Recent Form**: Evaluate the last 5 matches to reflect current momentum.
+3. **Head-to-Head Dynamics**: Considers rivalry matches and derbies for added nuance.
+4. **Absence Impact**: Weigh the influence of player absences on team performance.
 
-### Data manipulation
-The system uses a dynamic calculation that adjusts each team's strength based on their stats and absences and for head-to-head matches between teams of similar status (famous derbies). As the code progresses, the odds are recalculated to ensure that the sum of the 3 possibilities (home win, draw, and away win) is 100%, offering a balanced and realistic prediction of the results.
+The calculations ensure the sum of probabilities for all three possible outcomes is 100%, providing balanced and reliable predictions.
 
-### Goals
-This project combines sports statistics with logic programming to provide well-founded predictions for football matches. Through factors such as recent performance, absences, and history, Score Predictor becomes an effective tool for analyzing and predicting results for the 2024 Brasileirão.
-
-### Languages and Tools
-#### Back-end
+### **Languages and Tools**
+#### **Back-end**
 <div style="display: inline_block"><cbr>
-  <img align = "top" alt = "gabrielbribeiroo_Prolog" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prolog/prolog-original.svg" />
-  <img align = "top" alt = "gabrielbribeiroo_Python" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" /> 
+  <img align="top" alt="Prolog" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prolog/prolog-original.svg" />
+  <img align="top" alt="Python" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" />
+  <img align="top" alt="FastAPI" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" />
 </div>
 
-#### Front-end
+#### **Front-end**
 <div style="display: inline_block"><cbr>
-  <img align = "top" alt = "gabrielbribeiroo_HTML" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" />
-  <img align = "top" alt = "gabrielbribeiroo_CSS" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" />
-  <img align = "top" alt = "gabrielbribeiroo_JavaScript" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" />
-  <img align = "top" alt = "gabrielbribeiroo_Bootstrap" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" />
+  <img align="top" alt="HTML" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" />
+  <img align="top" alt="CSS" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" />
+  <img align="top" alt="JavaScript" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" />
+  <img align="top" alt="Bootstrap" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" />
 </div>
 
-#### APIs and Integrations
+#### **APIs and Integrations**
 <div style="display: inline_block"><cbr>
-  <img align = "top" alt = "gabrielbribeiroo_FastAPI" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" />
-  <img align = "top" alt = "gabrielbribeiroo_REST API" height = "50" width = "50" src="https://img.icons8.com/fluency/48/api.png" /> 
+  <img align="top" alt="REST API" height="50" width="50" src="https://img.icons8.com/fluency/48/api.png" />
 </div>
 
-#### 🔧 Development Tools
+#### **🔧 Development Tools**
 <div style="display: inline_block"><cbr>
-  <img align = "top" alt = "gabrielbribeiroo_VSCode" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" />
-  <img align = "top" alt = "gabrielbribeiroo_PowerShell" height = "50" width = "50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powershell/powershell-original.svg" />
+  <img align="top" alt="VSCode" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" />
+  <img align="top" alt="PowerShell" height="50" width="50" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powershell/powershell-original.svg" />
 </div>
-  
-### Instructions for use
-- **Clone the repository**: git clone https://github.com/gabrielbribeiroo/ScorePredictor.git
-- **Interpret the project**: Use a Prolog interpreter for the project files (```swipl```).  
-- **Run the program**: After interpretation, load the program (```consult('regras.pl').```) and execute the (```consultar_jogo.```) function.
-- **Navigate through the menu**: Know the probability of the match result.
+
+
+### **Setup and Installation**
+Follow the steps below to set up and run the project:
+
+#### **Prerequisites**
+1. Install **SWI-Prolog** for Prolog execution.
+2. Install Python (>= 3.8) and required libraries: ```pip install fastapi uvicorn requests```
+
+#### **Clone the Repository**
+```git clone https://github.com/gabrielbribeiroo/ScorePredictor.git```
+```cd ScorePredictor```
+
+#### **Run the Back-End Server**
+1. Start the FastAPI server: ```python main.py```
+2. The server will run at ```http://127.0.0.1:8000```
+
+#### **Run the Front-End**
+Open ```index.html``` in your browser or host it using a local HTTP server (e.g., ```python -m http.server```).
+
+
+### **Usage Instructions**
+1. Access the Web Interface:
+Open your browser and navigate to ```http://127.0.0.1:8000``` or the hosted HTML page.
+2. Select Teams:
+Choose the home and away teams from the dropdown menu.
+3. Adjust Absences:
+Use the sliders to indicate absence levels for each team.
+4. View Predictions:
+Click the "Predict" button to see calculated probabilities.
+
+
+### **Goals**
+This project integrates advanced sports statistics with logical programming to:
+1. Provide realistic predictions for Brasileirão 2025 matches.
+2. Assist in sports betting decisions with data-driven insights.
+3. Serve as a learning tool for combining Prolog, Python, and web technologies.
+
+
+### **Contributing**
+Contributions are welcome! Please fork the repository, make changes, and submit a pull request.
+
+### **License**
+This project is licensed under the MIT License.
