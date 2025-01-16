@@ -12,10 +12,10 @@ ScorePredictor is a statistical analysis system designed for Brasileirão 2025 f
 
 ### **System Architecture**
 The system is built around a robust statistical model that dynamically calculates probabilities by:
-1. **Team Strength**: Based on historical performance, standings, and other key metrics.
-2. **Recent Form**: Evaluate the last 5 matches to reflect current momentum.
-3. **Head-to-Head Dynamics**: Considers rivalry matches and derbies for added nuance.
-4. **Absence Impact**: Weigh the influence of player absences on team performance.
+- **Team Strength**: Based on historical performance, standings, and other key metrics.
+- **Recent Form**: Evaluate the last 5 matches to reflect current momentum.
+- **Head-to-Head Dynamics**: Considers rivalry matches and derbies for added nuance.
+- **Absence Impact**: Weigh the influence of player absences on team performance.
 
 The calculations ensure the sum of probabilities for all three possible outcomes is 100%, providing balanced and reliable predictions.
 
@@ -67,21 +67,17 @@ Open ```index.html``` in your browser or host it using a local HTTP server (e.g.
 
 
 ### **Usage Instructions**
-1. Access the Web Interface:
-Open your browser and navigate to ```http://127.0.0.1:8000``` or the hosted HTML page.
-2. Select Teams:
-Choose the home and away teams from the dropdown menu.
-3. Adjust Absences:
-Use the sliders to indicate absence levels for each team.
-4. View Predictions:
-Click the "Predict" button to see calculated probabilities.
+- **Access the Web Interface**: Open your browser and navigate to ```http://127.0.0.1:8000``` or the hosted HTML page.
+- **Select Teams**: Choose the home and away teams from the dropdown menu.
+- **Adjust Absences**: Use the sliders to indicate absence levels for each team.
+- **View Predictions**: Click the "Predict" button to see calculated probabilities.
 
 
 ### **Goals**
 This project integrates advanced sports statistics with logical programming to:
-1. Provide realistic predictions for Brasileirão 2025 matches.
-2. Assist in sports betting decisions with data-driven insights.
-3. Serve as a learning tool for combining Prolog, Python, and web technologies.
+- Provide realistic predictions for Brasileirão 2025 matches.
+- Assist in sports betting decisions with data-driven insights.
+- Serve as a learning tool for combining Prolog, Python, and web technologies.
 
 
 ### **Contributing**
