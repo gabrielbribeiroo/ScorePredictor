@@ -10,6 +10,7 @@ HEADERS = {
 }
 
 def obter_dados_brasileirao(temporada):
+    """Obtém os dados do Brasileirão para uma temporada específica."""
     url = f"{BASE_URL}/standings?league=71&season={temporada}"
     response = requests.get(url, headers=HEADERS)
     
@@ -19,7 +20,14 @@ def obter_dados_brasileirao(temporada):
         print("Erro ao buscar dados:", response.status_code, response.text)
         return None
 
+def calcular_aproveitamento(jogos):
+    """Calcula o aproveitamento baseado em uma lista de resultados."""
+    pontos_conquistados = sum([3 if r == 'W' else 1 if r == 'D' else 0 for r in jogos])  # 'W' = vitória, 'D' = empate, 'L' = derrota
+    total_jogos = len(jogos)
+    return round((pontos_conquistados / (total_jogos * 3)) * 100, 2) if total_jogos > 0 else 0
+
 def salvar_dados_em_prolog(dados, arquivo):
+    """Salva os dados obtidos em um arquivo Prolog."""
     times = dados['response'][0]['league']['standings'][0]
     
     with open(arquivo, 'w', encoding='utf-8') as f:
@@ -27,6 +35,8 @@ def salvar_dados_em_prolog(dados, arquivo):
         
         for time in times:
             nome = time['team']['name'].lower().replace(' ', '_')
+            
+            # Classificação dos times por status
             if nome in ['atletico-mg', 'botafogo', 'corinthians', 'cruzeiro', 'flamengo', 'fluminense', 'grêmio', 'internacional', 'palmeiras', 'santos', 'sao_paulo', 'vasco']:
                 status = "grande"
             elif nome in ['bahia', 'bragantino', 'ceara', 'fortaleza', 'sport']:
@@ -34,28 +44,28 @@ def salvar_dados_em_prolog(dados, arquivo):
             elif nome in ['juventude', 'mirassol', 'vitoria']:
                 status = "pequeno"
             else:
-                status = "desconhecido"  # Caso o time não esteja listado.
+                status = "desconhecido"
+            
+            # Dados básicos
             classificacao = time['rank']
             gols_pro = time['all']['goals']['for']
             gols_contra = time['all']['goals']['against']
-            posse_bola = 50
-            chutes_gol = 5
-            chutes_fora = 5
+            posse_bola = 50  # Valor fixo se não disponível na API
+            chutes_gol = 5  # Valor fixo se não disponível na API
+            chutes_fora = 5  # Valor fixo se não disponível na API
             vitorias = time['all']['win']
-            # Calcular aproveitamento recente (últimos 5 jogos)
-            pontos_conquistados_recente = sum([3 if r == 'v' else 1 if r == 'e' else 0 for r in ultimos_5_jogos])
-            aprov_rec = round((pontos_conquistados_recente / 15) * 100, 2)
-
-            # Calcular aproveitamento em casa
-            pontos_conquistados_casa = sum([3 if r == 'v' else 1 if r == 'e' else 0 for r in jogos_casa])
-            total_jogos_casa = len(jogos_casa)
-            aprov_casa = round((pontos_conquistados_casa / (total_jogos_casa * 3)) * 100, 2) if total_jogos_casa > 0 else 0
-
-            # Calcular aproveitamento fora de casa
-            pontos_conquistados_fora = sum([3 if r == 'v' else 1 if r == 'e' else 0 for r in jogos_fora])
-            total_jogos_fora = len(jogos_fora)
-            aprov_fora = round((pontos_conquistados_fora / (total_jogos_fora * 3)) * 100, 2) if total_jogos_fora > 0 else 0
             
+            # Resultados recentes e aproveitamentos
+            ultimos_5_jogos = [match['result'] for match in time['form'][:5]]  # Obtém os últimos 5 resultados ('W', 'D', 'L')
+            aprov_rec = calcular_aproveitamento(ultimos_5_jogos)
+            
+            jogos_casa = [match['result'] for match in time['home']['results']]  # Resultados em casa
+            aprov_casa = calcular_aproveitamento(jogos_casa)
+            
+            jogos_fora = [match['result'] for match in time['away']['results']]  # Resultados fora de casa
+            aprov_fora = calcular_aproveitamento(jogos_fora)
+            
+            # Grava os dados no arquivo Prolog
             f.write(f"time({nome}, {status}, {classificacao}, {gols_pro}, {gols_contra}, {posse_bola}, {chutes_gol}, {chutes_fora}, {vitorias}, {aprov_rec}, {aprov_casa}, {aprov_fora}, 0.2).\n")
 
 if __name__ == "__main__":
@@ -64,3 +74,5 @@ if __name__ == "__main__":
     if dados:
         salvar_dados_em_prolog(dados, 'prolog/dados.pl')
         print("Dados salvos com sucesso em prolog/dados.pl")
+    else:
+        print("Falha ao obter os dados do Brasileirão.")
