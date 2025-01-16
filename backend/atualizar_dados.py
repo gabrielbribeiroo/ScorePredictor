@@ -42,9 +42,19 @@ def salvar_dados_em_prolog(dados, arquivo):
             chutes_gol = 5
             chutes_fora = 5
             vitorias = time['all']['win']
-            aprov_rec = round((vitorias / 38) * 100, 2)
-            aprov_casa = aprov_rec * 1.1
-            aprov_fora = aprov_rec * 0.9
+            # Calcular aproveitamento recente (últimos 5 jogos)
+            pontos_conquistados_recente = sum([3 if r == 'v' else 1 if r == 'e' else 0 for r in ultimos_5_jogos])
+            aprov_rec = round((pontos_conquistados_recente / 15) * 100, 2)
+
+            # Calcular aproveitamento em casa
+            pontos_conquistados_casa = sum([3 if r == 'v' else 1 if r == 'e' else 0 for r in jogos_casa])
+            total_jogos_casa = len(jogos_casa)
+            aprov_casa = round((pontos_conquistados_casa / (total_jogos_casa * 3)) * 100, 2) if total_jogos_casa > 0 else 0
+
+            # Calcular aproveitamento fora de casa
+            pontos_conquistados_fora = sum([3 if r == 'v' else 1 if r == 'e' else 0 for r in jogos_fora])
+            total_jogos_fora = len(jogos_fora)
+            aprov_fora = round((pontos_conquistados_fora / (total_jogos_fora * 3)) * 100, 2) if total_jogos_fora > 0 else 0
             
             f.write(f"time({nome}, {status}, {classificacao}, {gols_pro}, {gols_contra}, {posse_bola}, {chutes_gol}, {chutes_fora}, {vitorias}, {aprov_rec}, {aprov_casa}, {aprov_fora}, 0.2).\n")
 
