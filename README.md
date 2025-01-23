@@ -10,6 +10,9 @@ ScorePredictor is a statistical analysis system designed for Brasileirão 2025 f
 - **Probability Analysis**: Calculates match outcome probabilities (home win, draw, away win) based on recent performance, team statistics, and absence levels.
 - **Dynamic Updates**: Automatically fetches and updates team statistics from a football data API for the 2025 Brasileirão season.
 
+### **Live Demo**
+[Check out the live version on Vercel](https://scorepredictor-woad.vercel.app/)
+
 ### **System Architecture**
 The system is built around a robust statistical model that dynamically calculates probabilities by:
 - **Team Strength**: Based on historical performance, standings, and other key metrics.
