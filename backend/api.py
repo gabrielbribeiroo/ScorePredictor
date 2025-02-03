@@ -4,8 +4,8 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # Configurações da API de futebol
-API_KEY = "SUA_CHAVE_DE_API"
-BASE_URL = "https://api.football-data.org/v4/competitions/BSA/standings"
+API_KEY = "e5c6e061715e09edeb441c6c8e0da104"
+BASE_URL = "https://api.football-data.org/v4/competitions/CPA/standings"  # Alterado para Campeonato Paulista
 
 # Função para buscar dados dos times
 def fetch_teams_data():

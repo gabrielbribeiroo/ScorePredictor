@@ -1,5 +1,4 @@
-
-const apiKey = 'd7aa2b611b6d75eb3e07115169e4f744'; 
+const apiKey = 'e5c6e061715e09edeb441c6c8e0da104'; 
 const baseUrl = 'https://v3.football.api-sports.io';
 
 const headers = {
@@ -7,18 +6,18 @@ const headers = {
     'x-rapidapi-key': apiKey
 };
 
-// Função para carregar os times do Brasileirão Série A 2025
+// Função para carregar os times do Campeonato Paulista 2025
 const fetchTeams = async () => {
     try {
-        const response = await axios.get(`${baseUrl}/teams?league=71&season=2025`, { headers });
+        const response = await axios.get(`${baseUrl}/teams?league=83&season=2025`, { headers }); // Alterado para Paulista
         const teams = response.data.response;
         const homeSelect = document.getElementById('home-team');
         const awaySelect = document.getElementById('away-team');
 
         teams.forEach(team => {
-        const option = `<option value="${team.team.id}">${team.team.name}</option>`;
-        homeSelect.innerHTML += option;
-        awaySelect.innerHTML += option;
+            const option = `<option value="${team.team.id}">${team.team.name}</option>`;
+            homeSelect.innerHTML += option;
+            awaySelect.innerHTML += option;
         });
     } 
     catch (error) {
@@ -34,11 +33,11 @@ const predict = async () => {
     const awayAbsence = document.getElementById('away-absence').value;
 
     try {
-        const response = await axios.post('https://api.example.com/predict', { // Substitua com a URL correta da API de previsão
-        homeTeam, 
-        awayTeam, 
-        homeAbsence, 
-        awayAbsence
+        const response = await axios.post('http://127.0.0.1:5000/api/calculate', { // Substitua com a URL correta da API de previsão
+            homeTeam, 
+            awayTeam, 
+            homeAbsence, 
+            awayAbsence
         });
 
         document.getElementById('results').innerHTML = `
