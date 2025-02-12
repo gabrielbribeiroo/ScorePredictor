@@ -1,7 +1,7 @@
 # Script Python para buscar dados da API e salvar no arquivo Prolog.
 import requests
 
-API_KEY = 'SUA_CHAVE_API'
+API_KEY = 'e5c6e061715e09edeb441c6c8e0da104'
 BASE_URL = 'https://v3.football.api-sports.io'
 
 HEADERS = {

@@ -5,6 +5,11 @@ body, h1, h2, p, select, button {
     font-family: 'Arial', sans-serif;
 }
 
+main {
+    background-image: url("https://www.lrgramas.com.br/imagens-midia/informacoes/grama-campo-futebol-01.webp");
+    background-repeat: repeat;
+}
+
 /* Corpo */
 body {
     background: url('background-brasileirao.jpg') no-repeat center center fixed;
