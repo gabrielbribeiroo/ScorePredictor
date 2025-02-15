@@ -4,30 +4,37 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # Configurações da API de futebol
-API_KEY = "e5c6e061715e09edeb441c6c8e0da104"
-BASE_URL = "https://api.football-data.org/v4/competitions/CPA/standings"  # Alterado para Campeonato Paulista
+API_KEY = "live_09e4c59f81eb4e8d7598afc5922efc"
+BASE_URL = "https://api.api-futebol.com.br/v1/campeonatos/10"
 
 # Função para buscar dados dos times
 def fetch_teams_data():
-    headers = {"X-Auth-Token": API_KEY}
-    response = requests.get(BASE_URL, headers=headers)
-    if response.status_code != 200:
-        return {"error": "Não foi possível buscar os dados dos times"}
+    headers = {"Authorization": f"Bearer {API_KEY}"}  # Corrigido para Bearer Token
+    try:
+        response = requests.get(BASE_URL, headers=headers)
+        response.raise_for_status()  # Lança erro caso o status seja diferente de 200
+    except requests.exceptions.RequestException as e:
+        return {"error": f"Erro ao buscar dados: {str(e)}"}
     
     data = response.json()
+
+    if "tabela" not in data:
+        return {"error": "Estrutura da API inesperada"}
+
     teams = {}
-    
+
     # Processar os dados para extrair informações dos times
-    for team_entry in data["standings"][0]["table"]:
-        team_name = team_entry["team"]["name"].lower().replace(" ", "_")
+    for team_entry in data["tabela"]:
+        team_name = team_entry["time"]["nome_popular"].lower().replace(" ", "_")
         teams[team_name] = {
-            "status": "grande" if team_entry["position"] <= 6 else ("medio" if team_entry["position"] <= 14 else "pequeno"),
-            "classificacao": team_entry["position"],
-            "gols_pro": team_entry["goalsFor"],
-            "gols_contra": team_entry["goalsAgainst"],
+            "status": "grande" if team_entry["posicao"] <= 6 else ("medio" if team_entry["posicao"] <= 14 else "pequeno"),
+            "classificacao": team_entry["posicao"],
+            "gols_pro": team_entry["gols_pro"],
+            "gols_contra": team_entry["gols_contra"],
             "posse_bola": 0,  # Dados de posse podem ser carregados de outra API
-            "vitorias": team_entry["won"]
+            "vitorias": team_entry["vitorias"]
         }
+
     return teams
 
 # Endpoint para obter os dados dos times
@@ -56,9 +63,10 @@ def calculate_probabilities():
         return jsonify({"error": "Time não encontrado"}), 404
 
     # Simulação de cálculo de probabilidade com base nos dados
-    prob_home = (home_stats["classificacao"] + home_stats["vitorias"]) * 1.2
-    prob_away = (away_stats["classificacao"] + away_stats["vitorias"]) * 1.0
-    total = prob_home + prob_away + 10  # Ajuste para empate
+    prob_home = (21 - home_stats["classificacao"]) * 1.2 + home_stats["vitorias"] * 1.5
+    prob_away = (21 - away_stats["classificacao"]) * 1.0 + away_stats["vitorias"] * 1.5
+    total = prob_home + prob_away + 15  # Ajuste para empate
+
     prob_home_percent = (prob_home / total) * 100
     prob_away_percent = (prob_away / total) * 100
     prob_draw_percent = 100 - (prob_home_percent + prob_away_percent)
@@ -72,4 +80,4 @@ def calculate_probabilities():
     })
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)  # Permite execução externa
