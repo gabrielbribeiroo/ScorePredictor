@@ -1,26 +1,26 @@
-const apiKey = 'e5c6e061715e09edeb441c6c8e0da104'; 
-const baseUrl = 'https://v3.football.api-sports.io';
+const apiKey = 'live_09e4c59f81eb4e8d7598afc5922efc';
+const baseUrl = 'https://api.api-futebol.com.br/v1/campeonatos/10';
 
 const headers = {
-    'x-rapidapi-host': 'v3.football.api-sports.io',
-    'x-rapidapi-key': apiKey
+    'x-apisports-key': apiKey  // Corrigido o cabeçalho correto
 };
 
 // Função para carregar os times do Campeonato Paulista 2025
 const fetchTeams = async () => {
     try {
-        const response = await axios.get(`${baseUrl}/teams?league=83&season=2025`, { headers }); // Alterado para Paulista
+        const response = await axios.get(`${baseUrl}/teams?league=83&season=2025`, { headers });
         const teams = response.data.response;
         const homeSelect = document.getElementById('home-team');
         const awaySelect = document.getElementById('away-team');
 
         teams.forEach(team => {
-            const option = `<option value="${team.team.id}">${team.team.name}</option>`;
-            homeSelect.innerHTML += option;
-            awaySelect.innerHTML += option;
+            const option = document.createElement('option');
+            option.value = team.team.name.toLowerCase().replace(" ", "_");  // Padrão para a API Flask
+            option.textContent = team.team.name;
+            homeSelect.appendChild(option.cloneNode(true));
+            awaySelect.appendChild(option);
         });
-    } 
-    catch (error) {
+    } catch (error) {
         console.error('Erro ao buscar os times:', error);
     }
 };
@@ -29,25 +29,26 @@ const fetchTeams = async () => {
 const predict = async () => {
     const homeTeam = document.getElementById('home-team').value;
     const awayTeam = document.getElementById('away-team').value;
-    const homeAbsence = document.getElementById('home-absence').value;
-    const awayAbsence = document.getElementById('away-absence').value;
+
+    if (!homeTeam || !awayTeam) {
+        alert("Por favor, selecione os dois times.");
+        return;
+    }
 
     try {
-        const response = await axios.post('http://127.0.0.1:5000/api/calculate', { // Substitua com a URL correta da API de previsão
-            homeTeam, 
-            awayTeam, 
-            homeAbsence, 
-            awayAbsence
+        const response = await axios.post('http://127.0.0.1:5000/api/calculate', { 
+            home_team: homeTeam,  // Corrigido para corresponder à API Flask
+            away_team: awayTeam
         });
 
         document.getElementById('results').innerHTML = `
-        <p>Vitória Mandante: ${response.data.homeWin}%</p>
-        <p>Empate: ${response.data.draw}%</p>
-        <p>Vitória Visitante: ${response.data.awayWin}%</p>
+            <p>Vitória Mandante: ${response.data.prob_home}%</p>
+            <p>Empate: ${response.data.prob_draw}%</p>
+            <p>Vitória Visitante: ${response.data.prob_away}%</p>
         `;
-    } 
-    catch (error) {
+    } catch (error) {
         console.error('Erro ao prever a partida:', error);
+        document.getElementById('results').innerHTML = `<p style="color: red;">Erro ao obter previsão.</p>`;
     }
 };
 
