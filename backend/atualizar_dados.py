@@ -2,7 +2,7 @@
 import requests
 
 API_KEY = 'live_09e4c59f81eb4e8d7598afc5922efc'
-BASE_URL = 'https://api.api-futebol.com.br/v1/campeonatos/10'
+BASE_URL = 'https://api.api-futebol.com.br/v1/campeonatos/6'
 
 HEADERS = {
     'Authorization': f'Bearer {API_KEY}'  # Corrigido para o formato correto

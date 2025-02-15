@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Configurações da API de futebol
 API_KEY = "live_09e4c59f81eb4e8d7598afc5922efc"
-BASE_URL = "https://api.api-futebol.com.br/v1/campeonatos/10"
+BASE_URL = "https://api.api-futebol.com.br/v1/campeonatos/6"
 
 # Função para buscar dados dos times
 def fetch_teams_data():
