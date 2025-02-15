@@ -1,17 +1,16 @@
 # Script Python para buscar dados da API e salvar no arquivo Prolog.
 import requests
 
-API_KEY = 'e5c6e061715e09edeb441c6c8e0da104'
-BASE_URL = 'https://v3.football.api-sports.io'
+API_KEY = 'live_09e4c59f81eb4e8d7598afc5922efc'
+BASE_URL = 'https://api.api-futebol.com.br/v1/campeonatos/10'
 
 HEADERS = {
-    'x-rapidapi-host': 'v3.football.api-sports.io',
-    'x-rapidapi-key': API_KEY
+    'Authorization': f'Bearer {API_KEY}'  # Corrigido para o formato correto
 }
 
-def obter_dados_brasileirao(temporada):
-    """Obtém os dados do Brasileirão para uma temporada específica."""
-    url = f"{BASE_URL}/standings?league=71&season={temporada}"
+def obter_dados_brasileirao():
+    """Obtém os dados do Brasileirão."""
+    url = f"{BASE_URL}/tabela"  # Corrigido para o endpoint correto
     response = requests.get(url, headers=HEADERS)
     
     if response.status_code == 200:
@@ -20,21 +19,19 @@ def obter_dados_brasileirao(temporada):
         print("Erro ao buscar dados:", response.status_code, response.text)
         return None
 
-def calcular_aproveitamento(jogos):
-    """Calcula o aproveitamento baseado em uma lista de resultados."""
-    pontos_conquistados = sum([3 if r == 'W' else 1 if r == 'D' else 0 for r in jogos])  # 'W' = vitória, 'D' = empate, 'L' = derrota
-    total_jogos = len(jogos)
-    return round((pontos_conquistados / (total_jogos * 3)) * 100, 2) if total_jogos > 0 else 0
+def calcular_aproveitamento(vitorias, jogos):
+    """Calcula o aproveitamento baseado em vitórias e total de jogos."""
+    return round((vitorias / jogos) * 100, 2) if jogos > 0 else 0
 
 def salvar_dados_em_prolog(dados, arquivo):
     """Salva os dados obtidos em um arquivo Prolog."""
-    times = dados['response'][0]['league']['standings'][0]
+    times = dados  # A API já retorna a tabela diretamente
     
     with open(arquivo, 'w', encoding='utf-8') as f:
         f.write('% Dados atualizados dos times do Brasileirão\n\n')
         
         for time in times:
-            nome = time['team']['name'].lower().replace(' ', '_')
+            nome = time['time']['nome_popular'].lower().replace(' ', '_')
             
             # Classificação dos times por status
             if nome in ['atletico-mg', 'botafogo', 'corinthians', 'cruzeiro', 'flamengo', 'fluminense', 'grêmio', 'internacional', 'palmeiras', 'santos', 'sao_paulo', 'vasco']:
@@ -47,30 +44,27 @@ def salvar_dados_em_prolog(dados, arquivo):
                 status = "desconhecido"
             
             # Dados básicos
-            classificacao = time['rank']
-            gols_pro = time['all']['goals']['for']
-            gols_contra = time['all']['goals']['against']
-            posse_bola = 50  # Valor fixo se não disponível na API
-            chutes_gol = 5  # Valor fixo se não disponível na API
-            chutes_fora = 5  # Valor fixo se não disponível na API
-            vitorias = time['all']['win']
+            classificacao = time['posicao']
+            gols_pro = time['gols_pro']
+            gols_contra = time['gols_contra']
+            vitorias = time['vitorias']
+            jogos = time['jogos']
             
-            # Resultados recentes e aproveitamentos
-            ultimos_5_jogos = [match['result'] for match in time['form'][:5]]  # Obtém os últimos 5 resultados ('W', 'D', 'L')
-            aprov_rec = calcular_aproveitamento(ultimos_5_jogos)
+            # Valores fixos para posse de bola e chutes
+            posse_bola = 50
+            chutes_gol = 5
+            chutes_fora = 5
             
-            jogos_casa = [match['result'] for match in time['home']['results']]  # Resultados em casa
-            aprov_casa = calcular_aproveitamento(jogos_casa)
-            
-            jogos_fora = [match['result'] for match in time['away']['results']]  # Resultados fora de casa
-            aprov_fora = calcular_aproveitamento(jogos_fora)
-            
+            # Aproveitamento
+            aprov_geral = calcular_aproveitamento(vitorias, jogos)
+            aprov_casa = aprov_geral  # Sem API específica, usando o geral
+            aprov_fora = aprov_geral  # Sem API específica, usando o geral
+
             # Grava os dados no arquivo Prolog
-            f.write(f"time({nome}, {status}, {classificacao}, {gols_pro}, {gols_contra}, {posse_bola}, {chutes_gol}, {chutes_fora}, {vitorias}, {aprov_rec}, {aprov_casa}, {aprov_fora}, 0.2).\n")
+            f.write(f"time({nome}, {status}, {classificacao}, {gols_pro}, {gols_contra}, {posse_bola}, {chutes_gol}, {chutes_fora}, {vitorias}, {aprov_geral}, {aprov_casa}, {aprov_fora}, 0.2).\n")
 
 if __name__ == "__main__":
-    temporada = 2025
-    dados = obter_dados_brasileirao(temporada)
+    dados = obter_dados_brasileirao()
     if dados:
         salvar_dados_em_prolog(dados, 'prolog/dados.pl')
         print("Dados salvos com sucesso em prolog/dados.pl")
